@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 
 export default function Form({ addTask }) {
-  const [name, setName] = useState("Use hooks!");
+  const [name, setName] = useState("");
 
   const handleSubmit = (e) => {
     e.preventDefault();
