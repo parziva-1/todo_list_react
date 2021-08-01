@@ -10,20 +10,35 @@ function App() {
 
   const addTask = (name) => {
     const newTask = { id: "todo-" + nanoid(), name, completed: false };
+    //let newArr = [newTask].concat(task)
+    
+    //setTask(newArr);
     setTask([newTask, ...task]);
   };
 
   const toggleTaskCompleted = (id) => {
-    task.forEach((tasks, i) => {
-      if (tasks.id === id) {
-        task[i].completed = !task[i].completed;
-        setTask([...task]);
-      }
+    task.forEach((elemento, i) =>{
+      if(elemento.id === id) {
+        task[i].completed = !task[i].completed
+        setTask([...task])
+      } 
     });
   };
 
   const removeTask = (id) => {
     setTask(task.filter((tasks) => id !== tasks.id));
+  };
+
+  const edditTask = (id, newContent) => {
+    console.log(id, newContent);
+    task.forEach((elemento, i) =>{
+      if(elemento.id === id) {
+
+        task[i].name = newContent
+        console.log(task[i].name);
+        setTask([...task])
+      } 
+    });
   };
 
   return (
@@ -55,6 +70,7 @@ function App() {
             id={task.id}
             toggleTaskCompleted={toggleTaskCompleted}
             removeTask={removeTask}
+            edditTask={edditTask}
           />
         ))}
       </ul>
