@@ -80,9 +80,21 @@ function App() {
       <h2 id="list-heading">
         {task.length > 0
           ? task.length === 1
-            ? task.length + " task remaining"
+            ? filter === "Active" || filter === "Completed"
+              ? taskList.length === 0
+                ? filter === "Active"
+                  ? "You no tasks active"
+                  : "You have no completed tasks "
+                : taskList.length + " task remaining"
+              : task.length + " task remaining"
+            : filter === "Active" || filter === "Completed"
+            ? taskList.length === 0
+              ? filter === "Active"
+                ? "You no tasks active"
+                : "You have no completed tasks "
+              : taskList.length + " tasks remaining"
             : task.length + " tasks remaining"
-          : ""}
+          : "No tasks found, add one"}
       </h2>
       <ul
         role="list"
@@ -90,7 +102,6 @@ function App() {
         aria-labelledby="list-heading"
       >
         {taskList}
-        
       </ul>
     </div>
   );
