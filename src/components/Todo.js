@@ -1,20 +1,26 @@
-import React from "react";
+import React, { useEffect } from "react";
 
-const Todo = ({
-  name,
-  completed,
-  id,
-  toggleTaskCompleted,
-  removeTask,
-  edditTask,
-}) => {
+import { useDispatch, useSelector } from "react-redux";
+import { removeTask, toggleTaskCompleted, editTask } from "../actions";
+
+const Todo = ({ name, completed, id }) => {
+  //suscrito a la store cada cambio que pase en ella va a ejecutar el useEffect
+  //para guardar el estado actual en el localStorage
+  const store = useSelector((state) => state);
+
+  useEffect(
+    () => window.localStorage.setItem("tasks", JSON.stringify(store)),
+    [store]
+  );
+
+  const dispatch = useDispatch();
   const [isEdit, setIsEdit] = React.useState(false);
   const [text, setText] = React.useState(name);
 
   const handleIsEdit = () => {
     setIsEdit(!isEdit);
     if (isEdit) {
-      edditTask(id, text);
+      dispatch(editTask(id, text));
     }
   };
   const handleChange = (e) => {
@@ -31,7 +37,7 @@ const Todo = ({
             id={id}
             type="checkbox"
             defaultChecked={completed}
-            onChange={() => toggleTaskCompleted(id)}
+            onChange={() => dispatch(toggleTaskCompleted(id))}
           />
         )}
         <label className="todo-label" htmlFor={id}>
@@ -40,7 +46,6 @@ const Todo = ({
               className="todo-text"
               id={id}
               onChange={handleChange}
-
               placeholder={name}
             />
           ) : (
@@ -70,7 +75,7 @@ const Todo = ({
           <button
             type="button"
             className="btn btn__danger"
-            onClick={() => removeTask(id)}
+            onClick={() => dispatch(removeTask(id))}
           >
             Delete <span className="visually-hidden">{name}</span>
           </button>

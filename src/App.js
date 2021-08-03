@@ -2,12 +2,11 @@ import React, { useState } from "react";
 import Todo from "./components/Todo";
 import Form from "./components/Form";
 import FilterButton from "./components/FilterButton";
-import { nanoid } from "nanoid";
-import { useStickyState } from "./lib";
+import { useSelector } from "react-redux";
 
 function App() {
   const [filter, setFilter] = useState("All");
-  const [task, setTask] = useStickyState([], "tasks");
+  const task = useSelector((state) => state);
 
   const FILTER_MAP = {
     All: () => true,
@@ -26,38 +25,6 @@ function App() {
     />
   ));
 
-  const addTask = (name) => {
-    const newTask = { id: "todo-" + nanoid(), name, completed: false };
-    //let newArr = [newTask].concat(task)
-
-    //setTask(newArr);
-    setTask([newTask, ...task]);
-  };
-
-  const toggleTaskCompleted = (id) => {
-    task.forEach((elemento, i) => {
-      if (elemento.id === id) {
-        task[i].completed = !task[i].completed;
-        setTask([...task]);
-      }
-    });
-  };
-
-  const removeTask = (id) => {
-    setTask(task.filter((tasks) => id !== tasks.id));
-  };
-
-  const edditTask = (id, newContent) => {
-    console.log(id, newContent);
-    task.forEach((elemento, i) => {
-      if (elemento.id === id) {
-        task[i].name = newContent;
-        console.log(task[i].name);
-        setTask([...task]);
-      }
-    });
-  };
-
   const taskList = task
     .filter(FILTER_MAP[filter])
     .map((task) => (
@@ -66,16 +33,13 @@ function App() {
         name={task.name}
         completed={task.completed}
         key={task.id}
-        toggleTaskCompleted={toggleTaskCompleted}
-        removeTask={removeTask}
-        edditTask={edditTask}
       />
     ));
 
   return (
     <div className="todoapp stack-large">
       <h1>TodoMatic</h1>
-      <Form addTask={addTask} />
+      <Form />
       <div className="filters btn-group stack-exception">{filterList}</div>
       <h2 id="list-heading">
         {task.length > 0

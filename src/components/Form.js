@@ -1,12 +1,17 @@
 import React, { useState } from "react";
+import { addTask } from "../actions";
 
-export default function Form({ addTask }) {
+import { useDispatch } from "react-redux";
+
+export default function Form() {
   const [name, setName] = useState("");
+  const dispatch = useDispatch()
 
   const handleSubmit = (e) => {
     e.preventDefault();
     setName(e.target[0].value);
-    addTask(name);
+    //addTask(name);
+    dispatch(addTask(name))
     setName("");
   };
 

@@ -1,19 +1,25 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
-import { nanoid } from "nanoid";
+import React from "react";
+import ReactDOM from "react-dom";
+import "./index.css";
+import App from "./App";
+import { createStore } from "redux";
+import { Provider } from "react-redux";
+import reducer from "./reducers";
+const KEY = "tasks"
 
-const data   = [
-  { id: "todo-"+ nanoid(), name: "Eat", completed: true },
-  { id: "todo-"+ nanoid(), name: "Sleep", completed: false },
-  { id: "todo-"+ nanoid(), name: "Repeat", completed: false }
-];
+const stickyValue = window.localStorage.getItem(KEY);
+const sticky = stickyValue !== null ? JSON.parse(stickyValue) : [];
+
+const store = createStore(reducer, sticky);
+
+
+
 
 ReactDOM.render(
   <React.StrictMode>
-    <App tasks={data}/>
+    <Provider store={store}>
+      <App />
+    </Provider>
   </React.StrictMode>,
-  document.getElementById('root')
+  document.getElementById("root")
 );
-
